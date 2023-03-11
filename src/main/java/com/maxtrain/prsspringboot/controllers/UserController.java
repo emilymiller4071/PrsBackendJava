@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.maxtrain.prsspringboot.entities.requests.AuthenticateRequest;
-import com.maxtrain.prsspringboot.entities.responses.AuthenticationResponse;
+import com.maxtrain.prsspringboot.entities.responses.AuthenticateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -87,10 +87,10 @@ public class UserController {
 	
 		
 	@PostMapping("/login")
-	public AuthenticationResponse authenticate(@RequestBody AuthenticateRequest loginUser) {
+	public AuthenticateResponse authenticate(@RequestBody AuthenticateRequest loginUser) {
 		User user = userRepo.findByUserNameAndPassword(loginUser.getUserName(), loginUser.getPassword());
 
-		return new AuthenticationResponse(
+		return new AuthenticateResponse(
 				user.getId(),
 				user.getFirstName(),
 				user.getLastName(),

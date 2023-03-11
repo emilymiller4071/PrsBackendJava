@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
-public class AuthenticationResponse {
+public class AuthenticateResponse {
     private int id;
     private String firstName;
     private String lastName;
