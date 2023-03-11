@@ -1,0 +1,32 @@
+[33mcommit ffe50ffd60af544c4c618914daf15176d8c9e942[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Merge: de08948 c8fbe13
+Author: kaitannmatthey-max <115675121+kaitannmatthey-max@users.noreply.github.com>
+Date:   Sat Mar 11 14:22:52 2023 -0500
+
+    Merge pull request #1 from emilymiller4071/feature/Refactor_Login_Request_Response_Objects
+    
+    Added the Lombok library to my dependencies
+
+[33mcommit c8fbe13f7066569103b3839e047154edfe1fcb89[m
+Author: Kait Matthey <kmatthey@maxtrain.com>
+Date:   Sat Mar 11 14:21:11 2023 -0500
+
+    @kaitannmatthey-max | Corrected the response object name.
+
+[33mcommit 60e5a906b4412cb81c820a565781fc14a993bf1f[m
+Author: Kait Matthey <kmatthey@maxtrain.com>
+Date:   Sat Mar 11 14:11:23 2023 -0500
+
+    @kaitannmatthey-max | Added the Lombok library to my dependencies. Created authentication request and response objects. Update the /login endpoint to use the authentication request and response object.
+
+[33mcommit de08948856c23cc32d6dea6b0f3e832b1177d04b[m
+Author: emilymiller4071 <emilyrauch3@gmail.com>
+Date:   Sat Mar 11 11:59:33 2023 -0500
+
+    JsonIgnore added to password property
+
+[33mcommit c6124d623f7be80518c059330f48e388c1f46ed2[m
+Author: emilymiller4071 <emilyrauch3@gmail.com>
+Date:   Mon Feb 20 16:45:30 2023 -0500
+
+    first commit

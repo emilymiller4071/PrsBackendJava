@@ -22,6 +22,7 @@ public class Product {
 	private double price;
 	private String unit;
 	private String photoPath;
+	private int vendorID;
 	
 	@ManyToOne
 	@JoinColumn(name = "VendorID")
@@ -38,7 +39,9 @@ public class Product {
 		this.price = price;
 		this.unit = unit;
 		this.photoPath = photoPath;
+		this.vendorID = vendorID;
 		this.vendor = vendor;
+		
 	}
 
 
@@ -102,11 +105,28 @@ public class Product {
 	}
 
 
+	public int getVendorID() {
+		return vendorID;
+	}
+
+
+	public void setVendorID(int vendorID) {
+		vendorID = vendorID;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", partNbr=" + partNbr + ", name=" + name + ", price=" + price + ", unit=" + unit
-				+ ", photoPath=" + photoPath + ", vendor=" + vendor + "]";
+				+ ", photoPath=" + photoPath + ", VendorID=" + vendorID + ", vendor=" + vendor + "]";
 	}
+
+
+//	@Override
+//	public String toString() {
+//		return "Product [id=" + id + ", partNbr=" + partNbr + ", name=" + name + ", price=" + price + ", unit=" + unit
+//				+ ", photoPath=" + photoPath + ", vendor=" + vendor + "]";
+//	}
 
 	
 }
