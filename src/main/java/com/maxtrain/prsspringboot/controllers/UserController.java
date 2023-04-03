@@ -83,17 +83,25 @@ public class UserController {
 		return user;
 		}	
 	
-		
-	@PostMapping("/login")
-	public AuthenticateResponse authenticate(@RequestBody AuthenticateRequest loginUser) {
+	
+	@PostMapping
+	public User authenticate(@RequestBody User loginUser) {
 		User user = userRepo.findByUserNameAndPassword(loginUser.getUserName(), loginUser.getPassword());
-
-		return new AuthenticateResponse(
-				user.getId(),
-				user.getFirstName(),
-				user.getLastName(),
-				user.isReviewer(),
-				user.isAdmin()
-		);
+		
+		return user;
 	}
+	
+	// Creating dto for logging in that sends in and gets back only necessary data 	
+//	@PostMapping("/login")
+//	public AuthenticateResponse authenticate(@RequestBody AuthenticateRequest loginUser) {
+//		User user = userRepo.findByUserNameAndPassword(loginUser.getUserName(), loginUser.getPassword());
+//
+//		return new AuthenticateResponse(
+//				user.getId(),
+//				user.getFirstName(),
+//				user.getLastName(),
+//				user.isReviewer(),
+//				user.isAdmin()
+//		);
+//	}
 }
