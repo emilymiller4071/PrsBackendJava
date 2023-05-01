@@ -2,8 +2,6 @@ package com.maxtrain.prsspringboot.controllers;
 import java.util.List;
 import java.util.Optional;
 
-import com.maxtrain.prsspringboot.entities.requests.AuthenticateRequest;
-import com.maxtrain.prsspringboot.entities.responses.AuthenticateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,24 +82,11 @@ public class UserController {
 		}	
 	
 	
-	@PostMapping
+	@PostMapping("/login")
 	public User authenticate(@RequestBody User loginUser) {
 		User user = userRepo.findByUserNameAndPassword(loginUser.getUserName(), loginUser.getPassword());
 		
 		return user;
 	}
-	
-	// Creating dto for logging in that sends in and gets back only necessary data 	
-//	@PostMapping("/login")
-//	public AuthenticateResponse authenticate(@RequestBody AuthenticateRequest loginUser) {
-//		User user = userRepo.findByUserNameAndPassword(loginUser.getUserName(), loginUser.getPassword());
-//
-//		return new AuthenticateResponse(
-//				user.getId(),
-//				user.getFirstName(),
-//				user.getLastName(),
-//				user.isReviewer(),
-//				user.isAdmin()
-//		);
-//	}
 }
+	
