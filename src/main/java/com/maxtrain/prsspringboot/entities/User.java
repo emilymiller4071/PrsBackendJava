@@ -1,7 +1,5 @@
 package com.maxtrain.prsspringboot.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,9 +14,8 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	private String userName;
+	private String username;
 	
-	@JsonIgnore
 	private String password;
 	
 	private String firstName;
@@ -37,10 +34,10 @@ public class User {
 	public User() {
 	}
 
-	public User(int id, String userName, String password, String firstName, String lastName, String phone, String email,
+	public User(int id, String username, String password, String firstName, String lastName, String phone, String email,
 			boolean isReviewer, boolean isAdmin) {
 		this.id = id;
-		this.userName = userName;
+		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -58,12 +55,12 @@ public class User {
 		this.id = id;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -106,25 +103,25 @@ public class User {
 		this.email = email;
 	}
 
-	public boolean isReviewer() {
+	public boolean getIsReviewer() {
 		return isReviewer;
 	}
 
-	public void setReviewer(boolean isReviewer) {
+	public void setIsReviewer(boolean isReviewer) {
 		this.isReviewer = isReviewer;
 	}
 
-	public boolean isAdmin() {
+	public boolean getIsAdmin() {
 		return isAdmin;
 	}
 
-	public void setAdmin(boolean isAdmin) {
+	public void setIsAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", firstName=" + firstName
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", phone=" + phone + ", email=" + email + ", isReviewer=" + isReviewer
 				+ ", isAdmin=" + isAdmin + "]";
 	}
