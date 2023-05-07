@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.maxtrain.prsspringboot.entities.Request;
 import com.maxtrain.prsspringboot.entities.RequestLine;
@@ -21,7 +24,8 @@ import com.maxtrain.prsspringboot.repositories.RequestRepository;
 
 @RestController
 @RequestMapping("/request-lines")
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins="http://localhost:4200", allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE })
+
 public class RequestLineController {
 	
 	@Autowired
@@ -44,6 +48,8 @@ public class RequestLineController {
 		
 		if (optionalRequestLine.isPresent()) {
 			requestLine = optionalRequestLine.get();
+		} else {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "RequestLine not found");
 		}
 		
 		return requestLine;
@@ -57,8 +63,7 @@ public class RequestLineController {
 		
 		if (!requestLineExists) {
 			requestLine = requestLineRepo.save(newRequestLine);
-			recalculateTotal(requestLine.getRequest());
-			
+			recalculateTotal(requestLine.getRequest());	
 		}
 		
 		return requestLine;
@@ -77,9 +82,10 @@ public class RequestLineController {
 	    	requestLine = optionalRequestLine.get();
 			Request request = requestLine.getRequest();
 			requestLine = requestLineRepo.save(updatedRequestLine);
-			recalculateTotal(request);
-			
-	    }
+			recalculateTotal(request);	
+	    } else {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "RequestLine not found");
+		}
 	    return requestLine;
 	}
 	
@@ -94,7 +100,8 @@ public class RequestLineController {
 			Request request = requestLine.getRequest();
 			requestLineRepo.deleteById(id);
 			recalculateTotal(request);
-		
+		} else {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "RequestLine not found");
 		}
 		
 		return requestLine;
@@ -113,10 +120,7 @@ public class RequestLineController {
 		}
 		request.setTotal(total);
 		
-		requestRepo.save(request);
-
-//		
-	}
-//	
+		requestRepo.save(request);	
+	}	
 }
 	

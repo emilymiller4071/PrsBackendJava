@@ -1,8 +1,10 @@
 package com.maxtrain.prsspringboot.controllers;
 import java.util.List;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,13 +14,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.maxtrain.prsspringboot.entities.User;
 import com.maxtrain.prsspringboot.repositories.UserRepository;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins="http://localhost:4200", allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE })
 public class UserController {
 
 	@Autowired
@@ -39,6 +43,8 @@ public class UserController {
 		
 		if (optionalUser.isPresent()) {
 			user = optionalUser.get();
+		} else {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
 		}
 		return user;
 	}
@@ -65,6 +71,8 @@ public class UserController {
 		
 		if(userExists) {
 			user = userRepo.save(updatedUser);
+		} else {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
 		}		
 		return user;
 	}
@@ -79,6 +87,8 @@ public class UserController {
 		if (userExists) {
 		user = optionalUser.get();
 		userRepo.deleteById(id);
+		} else {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
 		}
 		return user;
 		}	
@@ -88,7 +98,11 @@ public class UserController {
 	public User authenticate(@RequestBody User loginUser) {
 		User user = userRepo.findByUsernameAndPassword(loginUser.getUsername(), loginUser.getPassword());
 		
+		  if (user == null || !user.getUsername().equals(loginUser.getUsername()) || !user.getPassword().equals(loginUser.getPassword())) {
+		        throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "May be short and stout...");
+		    }
+		
 		return user;
 	}
 }
-	
+

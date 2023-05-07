@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,13 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.maxtrain.prsspringboot.entities.Request;
 import com.maxtrain.prsspringboot.repositories.RequestRepository;
 
 @RestController
 @RequestMapping("/requests")
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins="http://localhost:4200", allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE })
+
 public class RequestController {
 	
 	private final String NEW = "New";
@@ -44,6 +49,8 @@ public class RequestController {
 		
 		if (optionalRequest.isPresent()) {
 			request = optionalRequest.get();
+		} else {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found");
 		}
 		
 		return request;
@@ -51,17 +58,17 @@ public class RequestController {
 	
 	@PostMapping("")
 	public Request create(@RequestBody Request newRequest) {
-		Request request = new Request();
+//		Request request = new Request();
 		
 		boolean requestExists = requestRepo.existsById(newRequest.getId());
 		
 		if(!requestExists) {
-			request.setStatus(NEW);
-			request.setSubmittedDate(LocalDateTime.now());
+			newRequest.setStatus(NEW);
+			newRequest.setSubmittedDate(LocalDateTime.now());
 			
-			request = requestRepo.save(newRequest);
+			newRequest = requestRepo.save(newRequest);
 		}
-		return request;
+		return newRequest;
 	}
 
 	@PutMapping
@@ -72,6 +79,8 @@ public class RequestController {
 		
 		if (requestExists) {
 			request = requestRepo.save(updatedRequest);
+		} else {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found");
 		}
 		return request;
 	}
@@ -85,6 +94,8 @@ public class RequestController {
 		if (requestExists) {
 			request = optionalRequest.get();
 			requestRepo.deleteById(id);
+		} else {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found");
 		}
 		return request;
 	}
@@ -106,6 +117,8 @@ public class RequestController {
 			approvedRequest.setStatus(APPROVED);
 			
 			request = requestRepo.save(approvedRequest);
+		} else {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found");
 		}
 		
 		return request;
@@ -113,21 +126,25 @@ public class RequestController {
 	
 	@PutMapping("/review")
 	public Request submitForReview(@RequestBody Request requestForReview) {
-		Request request = new Request();
-		boolean requestExists = requestRepo.existsById(requestForReview.getId());
-		
-		if(requestExists && request.getTotal() <= 50) {
-			requestForReview.setStatus(APPROVED);
-			requestForReview.setSubmittedDate(LocalDateTime.now());
-			request = requestRepo.save(requestForReview);
-			
-		}else if (requestExists && request.getTotal() > 50) {
-			requestForReview.setStatus(REVIEW);
-			requestForReview.setSubmittedDate(LocalDateTime.now());
-			request = requestRepo.save(requestForReview);
-		}
-			return request;
+	    Optional<Request> optionalRequest = requestRepo.findById(requestForReview.getId());
+	    
+	    if (optionalRequest.isPresent()) {
+	        Request request = optionalRequest.get();
+	        
+	        if (requestForReview.getTotal() > 50) {
+	            requestForReview.setStatus(REVIEW);
+	        } else {
+	            requestForReview.setStatus(APPROVED);
+	        }
+	        
+	        requestForReview.setSubmittedDate(LocalDateTime.now());
+	        request = requestRepo.save(requestForReview);
+	        return request;
+	    } else {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found");
+		}  
 	}
+	
 	
 	@PutMapping("/reject")
 	public Request rejectRequest(@RequestBody Request rejectedRequest) {
@@ -137,6 +154,8 @@ public class RequestController {
 		if (requestExists) {
 			rejectedRequest.setStatus(REJECTED);
 			request = requestRepo.save(rejectedRequest);
+		} else {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found");
 		}
 		return request;
 	}
@@ -149,6 +168,8 @@ public class RequestController {
 		if (requestExists) {
 			reopenedRequest.setStatus(REOPENED);
 			request = requestRepo.save(reopenedRequest);
+		} else {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found");
 		}
 		return request;
 	}
