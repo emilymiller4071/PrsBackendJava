@@ -10,4 +10,6 @@ import com.maxtrain.prsspringboot.entities.RequestLine;
 public interface RequestLineRepository extends JpaRepository<RequestLine, Integer> {
 
 	List<RequestLine> findByRequest(Request request);
+	
+	List<RequestLine> findByRequestId(int id);
 }

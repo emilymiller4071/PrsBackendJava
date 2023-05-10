@@ -56,6 +56,15 @@ public class RequestLineController {
 	}
 		
 	
+	@GetMapping("/review/{id}")
+	public List<RequestLine> requestLinesForRequest(@PathVariable int id) {
+		List<RequestLine> requestLines = requestLineRepo.findByRequestId(id);
+		
+		
+		return requestLines;
+	}
+	
+	
 	@PostMapping
 	public RequestLine create(@RequestBody RequestLine newRequestLine) {
 		RequestLine requestLine = new RequestLine();

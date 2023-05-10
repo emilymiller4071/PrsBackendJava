@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.maxtrain.prsspringboot.entities.User;
 import com.maxtrain.prsspringboot.repositories.UserRepository;
@@ -91,18 +92,20 @@ public class UserController {
 	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
 		}
 		return user;
-		}	
-	
-	
+		}
+
+
+
 	@PostMapping("/login")
 	public User authenticate(@RequestBody User loginUser) {
 		User user = userRepo.findByUsernameAndPassword(loginUser.getUsername(), loginUser.getPassword());
 		
-		  if (user == null || !user.getUsername().equals(loginUser.getUsername()) || !user.getPassword().equals(loginUser.getPassword())) {
-		        throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "May be short and stout...");
-		    }
+		if (user == null) {
+			throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "May be short and stout...");
+		}
 		
 		return user;
 	}
 }
+
 
